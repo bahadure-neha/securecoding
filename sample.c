@@ -1,7 +1,11 @@
 #include <stdio.h>
-int main() {
-	char last_name[20];
-	printf ("Enter your last name: ");
-	scanf ("%19s", last_name);
-	printf("Entered last name is %s\n", last_name);
-	}
+#include <stdlib.h>
+#include <string.h>
+
+int main(int argc, char** argv) {
+  char *userName = argv[1];
+  
+    char command1[1000] = {0};
+    sprintf(command1, "ls %s", userName);
+    system(command1);
+}
