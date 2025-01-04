@@ -1,0 +1,36 @@
+name: "CodeQL Multi-Language Analysis"
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 0 * * 0'  # Runs every Sunday at midnight
+
+jobs:
+  analyze:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up CodeQL CLI
+        uses: github/codeql-action/init@v2
+        with:
+          languages: "c, python, javascript"  # Specify the languages for CodeQL
+
+      - name: Build the C project
+        run: |
+          make  # Replace with your actual build command for C projects
+
+      - name: Create CodeQL database
+        run: |
+          codeql database create mydb --language=cpp --command=make
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          database: ./mydb
