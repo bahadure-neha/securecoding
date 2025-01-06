@@ -1,2 +1,2 @@
 all:
-	gcc -o main sim1-ex1a.py
+	gcc -o main sim1-ex1e.c
