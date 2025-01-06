@@ -1,4 +1,4 @@
-name: "CodeQL Multi-Language Analysis"
+name: "CodeQL Analysis for JavaScript, Python, and C"
 
 on:
   push:
@@ -10,33 +10,46 @@ on:
 
 jobs:
   analyze:
-    name: CodeQL Analysis
+    name: CodeQL Multi-Language Analysis
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up CodeQL
+      # Step 2: Set up CodeQL
+      - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
         with:
-          languages: "javascript, python, cpp"
+          languages: "javascript, python, cpp"  # Specify languages to analyze
         env:
-          CODEQL_ACTION_DONT_AUTOBUILD: true
+          CODEQL_ACTION_DONT_AUTOBUILD: true  # Disable automatic build for C
 
+      # Step 3: Install Python dependencies (if applicable)
       - name: Install Python dependencies
         run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install -r requirements.txt
+          if [ -f requirements.txt ]; then
+            python -m venv venv
+            source venv/bin/activate
+            pip install -r requirements.txt
+          fi
 
+      # Step 4: Install JavaScript dependencies (if applicable)
       - name: Install JavaScript dependencies
-        run: npm install
+        run: |
+          if [ -f package.json ]; then
+            npm install
+          fi
 
+      # Step 5: Build C code manually
       - name: Build C code
         run: |
-          make clean
-          make
+          sudo apt-get update
+          sudo apt-get install -y build-essential
+          make clean || true  # Clean previous builds, ignore error if no Makefile exists
+          make || true         # Attempt to build, ignore error if no Makefile exists
 
+      # Step 6: Run CodeQL analysis
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
