@@ -17,28 +17,26 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up CodeQL CLI
+      - name: Set up CodeQL
         uses: github/codeql-action/init@v2
         with:
-          languages: "c, python, javascript"  # Specify the languages for CodeQL
-      # Build step for C code
-      - name: Build the C project
-        run: |
-           make clean   # Clean previous builds if necessary
-           make         # Build the C code
-            
+          languages: "javascript, python, cpp"
+        env:
+          CODEQL_ACTION_DONT_AUTOBUILD: true
+
       - name: Install Python dependencies
         run: |
           python -m venv venv
           source venv/bin/activate
           pip install -r requirements.txt
 
-    
-      - name: Create CodeQL database
+      - name: Install JavaScript dependencies
+        run: npm install
+
+      - name: Build C code
         run: |
-          codeql database create mydb --language=cpp --command=make
+          make clean
+          make
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
-        with:
-          database: ./mydb
