@@ -25,7 +25,7 @@ jobs:
       - name: Build the C project
         run: |
            make clean   # Clean previous builds if necessary
-            make        # Build the C code
+           make         # Build the C code
             
       - name: Install Python dependencies
         run: |
