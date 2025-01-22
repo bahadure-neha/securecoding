@@ -1,2 +1,2 @@
 all:
-	gcc -o main  fixed_code.c
+	gcc -o main fixed_code.c
