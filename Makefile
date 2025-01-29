@@ -1,2 +1,2 @@
 all:
-	gcc -o main simulation3_1.c
+	gcc -o main sample.c
