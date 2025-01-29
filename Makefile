@@ -1,2 +1,2 @@
 all:
-	gcc -o main sample.c
+	gcc -o main sim3_1_fixed_code.c
