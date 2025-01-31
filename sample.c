@@ -1,8 +1,7 @@
 #include <stdio.h>
-#include <stdlib.h>
-
-int main(int argc, char **argv) {
-    char *items[] = {"boat", "car", "truck", "train"};
-    int index = atoi(argv[1]);
-    printf("You selected %s\n", items[index]);
+int getValueFromArray(int *array, int len, int index) {
+    if (index < 0 || index >= len) {  // Bounds checking added
+        return -1;  // Return error value for out-of-bounds access
+    }
+    return array[index];
 }
